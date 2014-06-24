@@ -1,0 +1,10 @@
+[global]
+
+# urls of web pages which contains musics you wanna download
+# different urls should be separated by ';'
+url = http://www.xiami.com/song/showcollect/id/32019880
+ 
+ 
+# the parent dir of all downloaded songs. downloaded songs will be organised by its page title
+# by default under dir called 'songs', not necessary to change this unless you could specify dir path correctly
+outdir = songs
