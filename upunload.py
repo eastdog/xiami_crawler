@@ -154,7 +154,7 @@ def add_header(urlstr):
     request = urllib2.Request(urlstr)
     agent = agents[random.randint(0, len(agents)-1)]
     request.add_header(agent[0], agent[1])
-    request.set_proxy('202.195.192.197:3128','http')
+    #request.set_proxy('202.195.192.197:3128','http')
 
     return request
 
