@@ -12,6 +12,7 @@ import socket
 import ConfigParser
 
 import sys
+defaultencoding = sys.getfilesystemencoding()
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -35,7 +36,7 @@ def page_view(urlstr, parentdir='songs'):
 
     html = response.read()
 
-    title = page_title.search(html)
+    title = page_title.search(html).split('_')[0]
     title = title.group(1).strip() if title else time.ctime()
     if u'专辑' in title:
         title = title[:title.index(u'专辑')]
@@ -54,7 +55,7 @@ def fetch_song(id, dir):
 
     socket.setdefaulttimeout(300)
 
-    global song_loction, song_name
+    global song_loction, song_name, defaultencoding
 
     try:
         response = urllib2.urlopen(add_header('http://www.xiami.com/song/playlist/id/%s'%id))
@@ -79,7 +80,7 @@ def fetch_song(id, dir):
 
     song_addr = mp3_decode(addr.strip())
     try:
-        print 'downloading', name
+        print 'downloading', name.encode(defaultencoding)
         urllib.urlretrieve(song_addr, os.path.join(dir, valid_path(name)))
         time.sleep(5)
         urllib.urlcleanup()
@@ -167,10 +168,14 @@ def valid_path(name):
 
 if __name__=='__main__':
 
-    config = ConfigParser.ConfigParser()
-    config.readfp(codecs.open('config', 'rb', 'utf-8'))
-    urls = set(map(lambda x:x.strip(), config.get('global', 'url').split(';')))
-    outdir = config.get('global', 'outdir')
+    if not os.path.exists('config'):
+        url = [raw_input('does not found file: config\nspecify url you wanna download:\n')]
+        outdir = 'songs'
+    else:
+        config = ConfigParser.ConfigParser()
+        config.readfp(codecs.open('config', 'rb', 'utf-8'))
+        urls = set(map(lambda x:x.strip(), config.get('global', 'url').split(';')))
+        outdir = config.get('global', 'outdir')
 
     for url in urls:
         album, songids = page_view(url, outdir)
