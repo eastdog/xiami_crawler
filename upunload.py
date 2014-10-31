@@ -16,13 +16,14 @@ defaultencoding = sys.getfilesystemencoding()
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
+# some REs to 
 page_title = re.compile(r'<title>(.+?)</title>')
 song_id = re.compile(r'song/(\d+)')
 song_loction = re.compile(r'<location>(.+)</location>')
 song_name = re.compile(r'<title>.*?<!\[CDATA\[(.+?)\]\]>.*?</title>')
 
 def page_view(urlstr, parentdir='songs'):
+
     """
     return the title of a page, and all song ids in this page
     """
@@ -49,6 +50,7 @@ def page_view(urlstr, parentdir='songs'):
     return valid_path(title), songids
 
 def fetch_song(id, dir):
+
     """
     fetch a song of a given id, and save it under dir
     """
@@ -126,6 +128,7 @@ def mp3_decode(s):
     return url
 
 def add_header(urlstr):
+
     """
     add headers for a url, return a request
     """
